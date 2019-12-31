@@ -94,10 +94,10 @@ simpleSelect { select } =
     Html.span [ Menu.onSelect Selected select ]
         [ Menu.view select
             [ class "select" ]
-            [ Menu.button " " [ class "item" ] [ Html.i [] [ text "No preferences" ] ]
-            , Menu.button "C" [ class "item" ] [ text "Continental" ]
-            , Menu.button "E" [ class "item" ] [ text "English" ]
-            , Menu.button "A" [ class "item" ] [ text "American" ]
+            [ Menu.button "" [ class "item" ] [ Html.i [] [ text "No preferences" ] ]
+            , Menu.button "CO" [ class "item" ] [ text "Continental" ]
+            , Menu.button "EN" [ class "item" ] [ text "English" ]
+            , Menu.button "AM" [ class "item" ] [ text "American" ]
             ]
             |> Html.map SelectMsg
         , button (Menu.trigger SelectMsg select) [ text "What's your breakfast type?" ]
@@ -134,6 +134,7 @@ css =
         text-align: left;
         color: #333;
         display: inline-block;
+        text-decoration: none;
     }
     .item:hover {
         background-color: lightgray;

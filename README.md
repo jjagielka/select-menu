@@ -15,7 +15,8 @@ There's a keyboard managment included: up/down navigation, escape hides dropdown
 
 ## Example
 
-Simple usage:
+To see live example go to the [example](http://jjagielka.github.io/select-menu) page and be sure to check out the [example code](https://github.com/jjagielka/select-menu/tree/master/examples) to get a better idea on how the configs work.
+
 
 ```elm
 import Html exposing (Html, div, button, text)
@@ -26,12 +27,17 @@ type alias Model =
     {menu: Menu}
 
 
+init : Model
+init =
+    {menu = Menu.init "unique-identifier"}
+
+
 type Msg 
     = MenuMsg Menu.Msg
     | Selected String
 
 
--- Simple dropdown menu
+-- Use it as dropdown menu with html links
 
 simpleMenu: Model -> Html msg
 simpleMenu { menu } =
@@ -45,8 +51,7 @@ simpleMenu { menu } =
             |> Html.map MenuMsg
         ]
 
-
--- Select behaviour
+-- .. or use it as a select with Selected messsage
 
 simpleSelect: Model -> Html msg
 simpleSelect { menu } =
