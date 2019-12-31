@@ -133,7 +133,6 @@ css =
         border: none;
         text-align: left;
         color: #333;
-        display: inline-block;
         text-decoration: none;
     }
     .item:hover {

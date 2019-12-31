@@ -1,8 +1,7 @@
 module Menu.FocusList exposing
     ( FocusList, Item(..), Msg
     , update, view
-    , trigger, onSelect
-    , onKeyDown
+    , trigger, onSelect, onKeyDown
     )
 
 {-| Probably the simplest implementation of the dropdown.
@@ -20,7 +19,7 @@ module Menu.FocusList exposing
 
 # Events
 
-@docs trigger, onSelect
+@docs trigger, onSelect, onKeyDown
 
 -}
 
@@ -58,8 +57,7 @@ itemToLink name i item =
             Html.a ([ id (makeId name i), tabindex -1, href url, style "display" "block" ] ++ attrs) children
 
         Button ( url, attrs, children ) ->
-            --button ([ id (makeId name i), tabindex -1, type_ "button", value url, style "width" "100%" ] ++ attrs) children
-            Html.a ([ id (makeId name i), tabindex -1, href "#", style "display" "block", value url ] ++ attrs) children
+            button ([ id (makeId name i), tabindex -1, type_ "button", value url, style "width" "100%" ] ++ attrs) children
 
 
 view : FocusList -> List (Item msg) -> List (Html msg)
@@ -129,11 +127,6 @@ trigger toMsg =
     preventOnArrows (isKey DownArrow (toMsg SelectFirst))
 
 
-onKeyDown1 : String -> (Maybe String -> msg) -> Attribute msg
-onKeyDown1 name toMsg =
-    preventOnArrows (nextFocusDecoder name >> D.map toMsg)
-
-
 onKeyDown : String -> (Msg -> msg) -> Attribute msg
 onKeyDown name toMsg =
     preventOnArrows (nextFocusDecoder name >> D.map (SetFocus >> toMsg))
@@ -167,7 +160,3 @@ nextFocusDecoder name key =
 
         Escape ->
             D.succeed (Just name)
-
-
-
--- Alernaive name for target: originalTarget
