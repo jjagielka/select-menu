@@ -17,6 +17,7 @@ type Msg
     = MenuMsg Menu.Msg
     | SelectMsg Menu.Msg
     | Selected String
+    | NoOp
 
 
 init : () -> ( Model, Cmd Msg )
@@ -48,6 +49,9 @@ update msg model =
 
         Selected value ->
             ( { model | selected = value }, Cmd.none )
+
+        NoOp ->
+            ( model, Cmd.none )
 
 
 view : Model -> Html Msg

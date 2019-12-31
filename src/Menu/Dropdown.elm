@@ -38,31 +38,33 @@ import Html.Events exposing (keyCode, on, onBlur, onClick, onFocus, onMouseDown)
 import Json.Decode as Decode
 
 
-{-| Dropdown model
--}
 type State
     = Open
     | Closed
 
 
+{-| Dropdown model type.
+-}
 type Dropdown
     = Dropdown State
 
 
-{-| Create a closed dropdown
+{-| Creates a closed dropdown.
 -}
 closed : Dropdown
 closed =
     Dropdown Closed
 
 
-{-| Create an open dropdown
+{-| Creates an open dropdown.
 -}
 open : Dropdown
 open =
     Dropdown Open
 
 
+{-| Toggles the dropdown state: closed/open.
+-}
 toggle : Dropdown -> Dropdown
 toggle (Dropdown drop) =
     case drop of

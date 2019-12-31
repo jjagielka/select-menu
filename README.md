@@ -56,7 +56,9 @@ simpleMenu { menu } =
 simpleSelect: Model -> Html msg
 simpleSelect { menu } =
     div [ Menu.onSelect Selected menu ]
-        [ button (Menu.trigger MenuMsg menu) [ text "What's your breakfast type?" ]
+        [ button (Menu.trigger MenuMsg menu) 
+            [ text "What's your breakfast type?" 
+            ]
         , Menu.view menu []
             [ Menu.button "C" [] [ text "Continental" ]
             , Menu.button "E" [] [ text "English" ]

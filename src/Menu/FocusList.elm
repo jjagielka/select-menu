@@ -2,6 +2,7 @@ module Menu.FocusList exposing
     ( FocusList, Item(..), Msg
     , update, view
     , trigger, onSelect, onKeyDown
+    , test
     )
 
 {-| Probably the simplest implementation of the dropdown.
@@ -28,19 +29,25 @@ import Html exposing (Attribute, Html, a, button, div, text)
 import Html.Attributes exposing (class, href, id, style, tabindex, type_, value)
 import Html.Events exposing (keyCode, on, onClick, onFocus, preventDefaultOn)
 import Json.Decode as D exposing (Decoder)
-import Task
+import Task exposing (Task)
 
 
+{-| Internal module messages.
+-}
 type Msg
     = SetFocus (Maybe String)
     | SelectFirst
 
 
+{-| List item types. Html link or button.
+-}
 type Item msg
     = Anchor ( String, List (Attribute msg), List (Html msg) )
     | Button ( String, List (Attribute msg), List (Html msg) )
 
 
+{-| The only value needed to be stored is the unique identifier used to set focus.
+-}
 type alias FocusList =
     String
 
@@ -60,6 +67,8 @@ itemToLink name i item =
             button ([ id (makeId name i), tabindex -1, type_ "button", value url, style "width" "100%" ] ++ attrs) children
 
 
+{-| Renders the list.
+-}
 view : FocusList -> List (Item msg) -> List (Html msg)
 view name children =
     List.indexedMap (itemToLink name) children
@@ -78,11 +87,15 @@ selectionDecoder prefix =
             )
 
 
+{-| Catches the selection.
+-}
 onSelect : (String -> msg) -> FocusList -> Attribute msg
 onSelect toMsg name =
     on "click" (D.field "target" (selectionDecoder <| name ++ "-") |> D.map toMsg)
 
 
+{-| Standard update function.
+-}
 update : Msg -> FocusList -> Cmd Msg
 update msg name =
     case msg of
@@ -94,6 +107,22 @@ update msg name =
 
         SelectFirst ->
             Task.attempt (\_ -> SetFocus Nothing) (Browser.Dom.focus <| makeId name 0)
+
+
+test : String -> (Task Browser.Dom.Error () -> msg) -> Attribute msg
+test name toMsg =
+    preventOnArrows
+        (nextFocusDecoder name
+            >> D.map
+                (\maybeTarget ->
+                    case maybeTarget of
+                        Just target ->
+                            Browser.Dom.focus target |> toMsg
+
+                        Nothing ->
+                            Browser.Dom.focus "" |> toMsg
+                )
+        )
 
 
 
@@ -122,11 +151,20 @@ toKey key =
             D.fail "not interested in"
 
 
+{-| Html.Attribute that causes the selection of the first elment in the list.
+-}
 trigger : (Msg -> msg) -> Attribute msg
 trigger toMsg =
     preventOnArrows (isKey DownArrow (toMsg SelectFirst))
 
 
+{-| Html.Attribute to handle navigation keys.
+
+    div [ onKeyDown FocusListMsg ]
+        [ FocusList.view list children
+        ]
+
+-}
 onKeyDown : String -> (Msg -> msg) -> Attribute msg
 onKeyDown name toMsg =
     preventOnArrows (nextFocusDecoder name >> D.map (SetFocus >> toMsg))
