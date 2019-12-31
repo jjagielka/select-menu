@@ -2,7 +2,6 @@ module Menu.FocusList exposing
     ( FocusList, Item(..), Msg
     , update, view
     , trigger, onSelect, onKeyDown
-    , test
     )
 
 {-| Probably the simplest implementation of the dropdown.
@@ -107,22 +106,6 @@ update msg name =
 
         SelectFirst ->
             Task.attempt (\_ -> SetFocus Nothing) (Browser.Dom.focus <| makeId name 0)
-
-
-test : String -> (Task Browser.Dom.Error () -> msg) -> Attribute msg
-test name toMsg =
-    preventOnArrows
-        (nextFocusDecoder name
-            >> D.map
-                (\maybeTarget ->
-                    case maybeTarget of
-                        Just target ->
-                            Browser.Dom.focus target |> toMsg
-
-                        Nothing ->
-                            Browser.Dom.focus "" |> toMsg
-                )
-        )
 
 
 
