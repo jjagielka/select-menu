@@ -5,7 +5,7 @@ module Menu exposing
     , open, trigger, onSelect
     )
 
-{-| Probably the simplest implementation of the dropdown.
+{-| Make Dropdown and FocusList work together.
 
 
 # Types

@@ -4,7 +4,7 @@ module Menu.FocusList exposing
     , trigger, onSelect, onKeyDown
     )
 
-{-| Probably the simplest implementation of the dropdown.
+{-| Manage focus on the list of sibilings.
 
 
 # Types
