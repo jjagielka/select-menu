@@ -4,7 +4,7 @@ module Menu.FocusList exposing
     , trigger, onSelect, onKeyDown
     )
 
-{-| Manage focus on the list of sibilings.
+{-| Manage focus changes through the list of sibilings.
 
 
 # Types

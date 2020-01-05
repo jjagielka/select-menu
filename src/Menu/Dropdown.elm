@@ -33,7 +33,7 @@ module Menu.Dropdown exposing
 -}
 
 import Html exposing (Attribute, Html, div, text)
-import Html.Attributes exposing (class, style)
+import Html.Attributes exposing (class, style, tabindex)
 import Html.Events exposing (keyCode, on, onBlur, onClick, onFocus, onMouseDown)
 import Json.Decode as Decode
 
@@ -80,8 +80,8 @@ toggle (Dropdown drop) =
 view : (Dropdown -> msg) -> Dropdown -> List (Attribute msg) -> List (Html msg) -> Html msg
 view toMsg (Dropdown drop) attrs children =
     if drop == Open && not (List.isEmpty children) then
-        div [ class "drop", style "position" "relative", style "display" "inline-block", onFocusOut <| toMsg closed, onFocusIn <| toMsg open ]
-            [ div (style "position" "absolute" :: attrs) children ]
+        div [ class "drop", style "position" "relative", onFocusOut <| toMsg closed, onFocusIn <| toMsg open ]
+            [ div (style "position" "absolute" :: style "overflow-y" "auto" :: tabindex -1 :: attrs) children ]
 
     else
         text ""
